@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Header from '../includes/header';
+import '../../styles/main.css'
 
 const MainLayout = (props) => {
   return (
@@ -15,7 +16,7 @@ const MainLayout = (props) => {
           href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'
           rel='stylesheet'
         />
-        <link href='static/css/styles.css' rel='stylesheet' />
+        <link href='/static/css/styles.css' rel='stylesheet' />
       </Head>
       <div className='mainLayout_container'>
         <Header />

@@ -1,38 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 import MainLayout from '../componets/layouts/mainLayout';
-import '../styles/main.css';
 
+const RenderUserList = (props) => {
+  const { users } = props;
+  return (
+    <>
+      {users
+        ? users.map((user, i) => {
+            return (
+              <li className='list-group-item' key={'list-user-' + i}>
+                <Link
+                  as={`/users/profile/${user.id}`}
+                  href={{
+                    pathname: '/users/profile',
+                    query: {
+                      userId: user.id
+                    }
+                  }}
+                >
+                  <a>{user.name}</a>
+                </Link>
+              </li>
+            );
+          })
+        : null}
+    </>
+  );
+};
 const Home = (props) => {
-  const { user } = props;
-  const [stateUser, setStateUser] = useState({});
-  useEffect(() => {
-    if (typeof user !== 'undefined') {
-      setStateUser(user);
-    }
-  }, [user]);
   return (
     <MainLayout>
-      <h1 className='superAwesome'>Welcome to my page</h1>
-      {JSON.stringify(stateUser)}
+      <h1 className='superAwesome'>Pick a user</h1>
+      <ul className='list-group'>
+        <RenderUserList users={props.users} />
+      </ul>
     </MainLayout>
   );
 };
-export const getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async () => {
   let userData;
   try {
     const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/users/1'
+      'https://jsonplaceholder.typicode.com/users'
     );
 
     userData = response.data;
   } catch (error) {
     console.log('Error :', error);
   }
-
   return {
     props: {
-      user: userData
+      users: userData
     }
   };
 };
